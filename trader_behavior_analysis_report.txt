@@ -1,0 +1,90 @@
+﻿Sentiment-Driven Trader Behavior Analysis
+Report
+
+
+This project investigates how market sentiment (Fear–Greed Index) influences trading behavior, performance, and risk-taking among Hyperliquid traders. By merging historical sentiment data with trade-level executions, the study uncovers how emotions reflected in market sentiment translate into measurable trading outcomes such as profitability, leverage usage, and directional bias. The analysis also concludes with strategy recommendations derived from these behavioral patterns.
+
+
+Methodology:
+1. Data Collection & Preprocessing:
+* Imported Fear–Greed Index data (CSV) and Hyperliquid trading history.
+* Standardized timestamp formats and extracted trade dates.
+* Merged both datasets using exact date alignment.
+* Engineered key features including:
+   * Exposure (leverage proxy): Start Position × Execution Price
+   * Win indicator: Closed PnL > 0
+   * Encoded BUY/SELL and LONG/SHORT actions
+   * Account-level features (trade frequency per account)
+
+
+2. Exploratory Data Analysis
+Performed statistical and visual analysis across sentiment regimes:
+* PnL distribution
+* Win rates
+* Exposure/leverage usage
+* Long/short ratios
+* Trade frequency patterns
+* Drawdown proxies (worst trades)
+
+
+
+
+3. Predictive Modeling
+* Built a Random Forest classifier to predict trade profitability:
+* Used non-leaky, trade-level engineered features.
+* Applied GroupShuffleSplit to avoid account-level leakage.
+* Achieved ~94% accuracy with balanced precision/recall.
+* Identified key predictive features: exposure, trade size, sentiment code, direction.
+
+
+Key Insights:
+1. Profitability Strongly Correlates with Sentiment
+* Extreme Greed exhibits the highest average PnL and win rate (~55%).
+* Fear & Extreme Fear produce tight PnL distributions and lower upside.
+* Greed days show the largest downside tail risk, with massive losses (−117k), indicating overconfidence or large, aggressive positions.
+2. Trader Behavior Distorts as Sentiment Shifts
+* Greed & Extreme Greed → Strong long bias, reflected by very high long/short ratios and elevated exposure.
+* Fear periods → Mixed, volatile behavior, with a blend of cautious balanced trades and outliers taking disproportionately large long exposures.
+* Extreme Fear → Minimal leverage, conservative behavior, and stable low-volatility outcomes.
+* Neutral sentiment provides the most balanced and consistent trading patterns.
+
+
+3. Leverage (Exposure) Patterns Explain Risk
+* Exposure spikes during Greed (largest variability), aligning with both large profits and immense losses.
+* Extreme Greed shows high but structured exposure usage — strong trends but fewer wild swings.
+* Neutral & Extreme Fear maintain low and consistent exposure levels, indicating controlled risk.
+
+
+
+
+4. Trade Frequency Mirrors Sentiment Intensity
+* More trades occur during Greed/Extreme Greed, reflecting market participation in strong trends.
+* Fear-related sentiments show uneven trade frequency, driven by volatility and uncertainty.
+
+
+
+Strategy Recommendations:
+1. Adjust Leverage Dynamically with Sentiment
+   * Reduce leverage during Greed: despite optimism, downside risk is highest.
+   * Allow moderate leverage during Extreme Greed: strong trends with fewer erratic moves.
+   * Minimal leverage during Fear/Extreme Fear: unpredictable volatility and low win rates.
+   * Neutral sentiment allows balanced, medium-risk positioning.
+
+
+2. Align Directional Bias with Sentiment
+   * Extreme Greed → Favor long setups; trend-following is most effective.
+   * Greed → Long bias is valid but apply tighter risk controls.
+   * Neutral → Use balanced strategies; mean-reversion works well.
+   * Fear → Hedge aggressively; reduce directional bets.
+   * Extreme Fear → Prefer neutral strategies (pairs trading, low directional exposure).
+
+
+3. Tune Trade Frequency to Market Environment
+   * Increase frequency in Extreme Greed where structure and momentum dominate.
+   * Decrease frequency in Fear, where noise and volatility overshadow trends.
+   * Maintain moderate frequency during Neutral and Extreme Fear.
+
+
+
+
+Streamlit Dashboard Screenshots:
